@@ -34,12 +34,41 @@
     .no {
         color: red;
     }
+
+    /* Styles for the second window */
+    .gallery-window {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-image: url('images/background2.jpg');
+        background-repeat: no-repeat;
+        background-size: cover; /* Cover the entire screen */
+        background-position: center;
+        color: black; /* Text color */
+        text-align: center; /* Center text */
+    }
+    .gallery-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .gallery-container img {
+        width: 150px;
+        margin: 5px;
+        border-radius: 5px;
+    }
 </style>
 </head>
 <body>
 <div id="question">Do you love me?</div>
 <div class="answer yes" onclick="showPictures()">Yes</div>
-<div class="answer no" onmouseover="moveAnswer(this)">No</div>
+<div class="answer no" id="noButton">No</div>
 
 <script>
 function moveAnswer(answer) {
@@ -61,13 +90,32 @@ function showPictures() {
     var message = "Because I love you endlessly mari jaan";
     var gallery = window.open("", "_blank");
     var galleryDocument = gallery.document;
-    galleryDocument.write("<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Gallery</title><style>body {font-family: Arial, sans-serif;margin: 0;padding: 0;height: 100vh;display: flex;justify-content: center;align-items: center;flex-direction: column;background-image: url('images/background2.jpg');background-repeat: no-repeat;background-size: cover;background-attachment: fixed;position: relative;}#overlay {position: absolute;top: 0;left: 0;width: 100%;height: 100%;}h1 {font-size: 48px;margin-bottom: 20px;text-align: center;}img {width: 150px;margin: 5px;border-radius: 5px;}</style></head><body><div id='overlay'></div><h1>" + message + "</h1><div class='gallery-container'>");
+    galleryDocument.write("<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Gallery</title><style>body {margin: 0;padding: 0;height: 100vh;} .gallery-window {font-family: Arial, sans-serif;margin: 0;padding: 0;height: 100vh;display: flex;justify-content: center;align-items: center;flex-direction: column;background-image: url('images/background2.jpg');background-repeat: no-repeat;background-size: cover;color: black;text-align: center;} .gallery-container {display: flex;flex-wrap: wrap;justify-content: center;align-items: center;} .gallery-container img {width: 150px;margin: 5px;border-radius: 5px;}</style></head><body><div class='gallery-window'><div id='overlay'></div><h1>" + message + "</h1><div class='gallery-container'>");
     images.forEach(function(imageUrl) {
         galleryDocument.write("<img src='" + imageUrl + "'>");
     });
-    galleryDocument.write("</div></body></html>");
+    galleryDocument.write("</div></div></body></html>");
     galleryDocument.close();
 }
+
+// Detect if the device is a touch-enabled device
+function isTouchDevice() {
+    return 'ontouchstart' in window || navigator.maxTouchPoints;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var noButton = document.getElementById('noButton');
+
+    if (!isTouchDevice()) {
+        noButton.addEventListener('mouseover', function() {
+            moveAnswer(this);
+        });
+    } else {
+        noButton.addEventListener('click', function() {
+            moveAnswer(this);
+        });
+    }
+});
 </script>
 </body>
 </html>
